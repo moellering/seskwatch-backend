@@ -29,14 +29,14 @@ def create_session(session: Session):
 
 @app.delete("/sessions/{session_id}")
 def delete_session(session_id: int):
-    res = db[session_id-1]
-    db.pop(session_id-1)
+    res = db[session_id]
+    db.pop(session_id)
     return res
 
 @app.put("/sessions/{session_id}")
 def edit_session(session_id:int, session: Session):
-    db[session_id-1] = Session
-    return  db[session_id-1]
+    db[session_id] = session
+    return  db[session_id].dict()
 
 @app.post("/sessions/{session_id}/registration")
 def register(session_id):
