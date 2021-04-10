@@ -43,10 +43,11 @@ async def delete_session(session_id: UUID):
     return {}
 
 @app.put("/sessions/{session_id}")
-def edit_session(session_id: UUID, session: SessionIn_Pydantic):
-    raise RuntimeError("Not implemented")
-    db[session_id] = session
-    return  db[session_id].dict()
+async def edit_session(session_id: UUID, session: SessionIn_Pydantic):
+    session_obj = await Session.filter(id=session_id).first()
+    session_obj.update_from_dict(session.dict())
+    await session_obj.save()
+    return await Session_Pydantic.from_tortoise_orm(session_obj)
 
 @app.post("/sessions/{session_id}/registration")
 def register(session_id: UUID):
