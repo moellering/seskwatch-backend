@@ -2,6 +2,8 @@ from typing import Optional
 from fastapi import FastAPI
 from datetime import datetime
 
+from uuid import UUID
+
 from tortoise.models import Model
 from tortoise import fields
 from tortoise.contrib.fastapi import register_tortoise
@@ -10,7 +12,6 @@ from tortoise.contrib.pydantic import pydantic_model_creator
 
 app = FastAPI()
 
-db = [] # mock db
 
 class Session(Model):
     id = fields.UUIDField(pk=True)
@@ -37,21 +38,22 @@ async def create_session(session: SessionIn_Pydantic):
     return await Session_Pydantic.from_tortoise_orm(session_obj)
 
 @app.delete("/sessions/{session_id}")
-async def delete_session(session_id: int):
-    Session.filter(id=session_id).delete()
+async def delete_session(session_id: UUID):
+    await Session.filter(id=session_id).delete()
     return {}
 
 @app.put("/sessions/{session_id}")
-def edit_session(session_id:int, session: SessionIn_Pydantic):
+def edit_session(session_id: UUID, session: SessionIn_Pydantic):
+    raise RuntimeError("Not implemented")
     db[session_id] = session
     return  db[session_id].dict()
 
 @app.post("/sessions/{session_id}/registration")
-def register(session_id):
+def register(session_id: UUID):
     raise RuntimeError("Not implemented")
 
 @app.delete("/sessions/{session_id}/registration")
-def unregister(session_id):
+def unregister(session_id: UUID):
     raise RuntimeError("Not implemented")
 
 
