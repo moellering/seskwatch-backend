@@ -1,7 +1,13 @@
 # seskwatch-backend
 
+## installing
+```
+# pipenv install
+```
+
+
 ## starting
 ```
 # cd seskwatch-backend
-# uvicorn main:app --reload
+# pipenv run uvicorn main:app --reload
 ```
