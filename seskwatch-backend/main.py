@@ -37,10 +37,9 @@ async def create_session(session: SessionIn_Pydantic):
     return await Session_Pydantic.from_tortoise_orm(session_obj)
 
 @app.delete("/sessions/{session_id}")
-def delete_session(session_id: int):
-    res = db[session_id]
-    db.pop(session_id)
-    return res
+async def delete_session(session_id: int):
+    Session.filter(id=session_id).delete()
+    return {}
 
 @app.put("/sessions/{session_id}")
 def edit_session(session_id:int, session: SessionIn_Pydantic):
